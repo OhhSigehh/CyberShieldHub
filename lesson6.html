@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 6 - Cybersecurity in the Real World</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      margin: 0; padding: 20px;
+    }
+    h1, h2 { text-shadow: 0 0 6px #00ff99; text-align:center; }
+    .lesson-box {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #111;
+      padding: 20px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+    .highlight {
+      background: #003322;
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .example {
+      border-left: 4px solid #00ff99;
+      padding-left: 10px;
+      margin: 15px 0;
+      font-style: italic;
+    }
+    button {
+      display:block; margin:20px auto;
+      padding:12px 20px;
+      background:#00ff99; color:#0a0a0a;
+      font-weight:bold; border:none;
+      border-radius:8px; cursor:pointer;
+      transition:0.3s;
+    }
+    button:hover { 
+      background:#009966;
+      color:#fff;
+      box-shadow:0 0 8px #00ff99;
+    }
+  
+    #popupMessage {
+      display:none; 
+      position:fixed; 
+      top:0; left:0; 
+      width:100%; 
+      height:100%;
+      background:rgba(0,0,0,0.85); 
+      justify-content:center;
+      align-items:center; 
+      z-index:3000;
+    }
+  
+    #popupMessage div {
+      background:#111;
+      border:1px solid #00ff99; 
+      border-radius:10px;
+      padding:20px;
+      max-width:400px; 
+      text-align:center;
+    }
+  
+    #popupMessage div h2{
+      color:#00ff99; 
+      text-shadow:0 0 6px #00ff99;
+    }
+  
+    /* Quiz Modal */
+    #quizModal {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    #quizContent {
+      background: #111;
+      width: 85%; max-width: 900px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+    #quizClose {
+      position: absolute; top: 10px; right: 15px;
+      font-size: 1.5rem; cursor: pointer;
+      color: #00ff99; font-weight: bold;
+    }
+    .question { 
+      margin-top: 20px; 
+      font-weight:bold;
+    }
+    label { 
+      display:block;
+      margin:6px 0; 
+      cursor:pointer; 
+    }
+    #result { 
+      text-align:center;
+      margin-top:20px;
+      font-size:1.1rem; 
+    }
+  </style>
+</head>
+<body>
+  <h1>Lesson 6: Cybersecurity in the Real World</h1>
+  <div class="lesson-box">
+    <!-- Section 1 -->
+    <div class="lesson-section" id="section1">
+      <h2>Introduction</h2>
+      <p>
+        Cybersecurity isn’t just theory — it’s part of daily life. From protecting personal devices 
+        to securing company networks, the principles you’ve learned must be applied consistently. 
+        This final lesson explores real-world scenarios and how to stay safe in different environments.
+      </p>
+      <button onclick="nextSection(1)">Next ➡</button>
+    </div>
+    
+    <!-- Section 2 -->
+    <div class="lesson-section" id="section2" style="display:none;">
+      <h2>Everyday Applications</h2>
+      <ul>
+        <li><span class="highlight">At Home:</span> Secure Wi-Fi, update devices, use antivirus.</li>
+        <li><span class="highlight">At School/Work:</span> Follow IT policies, avoid suspicious emails, report threats.</li>
+        <li><span class="highlight">In Public:</span> Use VPN on public Wi-Fi, avoid accessing sensitive accounts.</li>
+        <li><span class="highlight">Social Life:</span> Be careful with what you share, think before you click.</li>
+      </ul>
+      <button onclick="nextSection(2)">Next ➡</button>
+    </div>
+    
+    <!-- Section 3 -->
+    <div class="lesson-section" id="section3" style="display:none;">
+      <h2>Case Study</h2>
+      <div class="example">
+        A company avoided major losses because employees recognized a phishing attempt and 
+        reported it immediately. Awareness + quick action = strong defense.
+      </div>
+      <button onclick="nextSection(3)">Next ➡</button>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="lesson-section" id="section4" style="display:none;">
+      <h2>Key Takeaway</h2>
+      <p>
+        Cybersecurity is a shared responsibility. By practicing safe habits, using the right tools, 
+        and staying aware, everyone can help build a safer digital world.
+      </p>
+      <button onclick="unlockQuiz()">Finish Lesson</button>
+    </div>
+
+    <button id="startQuizBtn" style="display:none;">Take the Final Quiz</button>
+  </div>
+
+  <div id="popupMessage">
+    <div>
+      <h2>Lesson Completed</h2>
+      <p>Congratulations! This is the final step — your last quiz is ready.</p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+  
+  <!-- Quiz Modal -->
+  <div id="quizModal">
+    <div id="quizContent">
+      <span id="quizClose">&times;</span>
+      <h2>Lesson 6 Quiz</h2>
+      <form id="quizForm"></form>
+      <div id="result"></div>
+    </div>
+  </div>
+
+    <!-- Section Unlock Script -->
+  <script>
+    function nextSection(current) {
+      document.getElementById(`section${current}`).style.display = "none";
+      document.getElementById(`section${current+1}`).style.display = "block";
+    }
+
+    function unlockQuiz() {
+      document.getElementById("startQuizBtn").style.display = "block";
+      document.getElementById("popupMessage").style.display = "flex"; // show custom popup  
+    }
+
+    function closePopup() {
+      document.getElementById("popupMessage").style.display = "none";
+    }
+  </script>
+  
+  <!-- Firebase + Quiz Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- Question Sets (5 sets × 5 questions) ---
+    const questionSets = [
+      [
+        { q: "What’s a safe habit on public Wi-Fi?", options: ["Use VPN", "Log in to bank"], correct: 0 },
+        { q: "What’s the first step in stopping phishing?", options: ["Recognize and report", "Click links"], correct: 0 },
+        { q: "What protects a home network?", options: ["Secure Wi-Fi password", "Leaving it open"], correct: 0 },
+        { q: "At work, what should you follow?", options: ["IT policies", "Random websites"], correct: 0 },
+        { q: "Who is responsible for cybersecurity?", options: ["Everyone", "Only IT team"], correct: 0 }
+      ],
+      [
+        { q: "Best way to protect school accounts?", options: ["Strong password", "Share login"], correct: 0 },
+        { q: "Why avoid public Wi-Fi logins?", options: ["Hackers can intercept data", "Wi-Fi is slow"], correct: 0 },
+        { q: "How can you help stop cybercrime?", options: ["Report threats", "Ignore scams"], correct: 0 },
+        { q: "What is social engineering?", options: ["Tricking people", "Coding"], correct: 0 },
+        { q: "Which device needs updates?", options: ["All devices", "None"], correct: 0 }
+      ],
+      [
+        { q: "What’s the safest way to browse?", options: ["Check HTTPS", "Click random links"], correct: 0 },
+        { q: "What should you do with suspicious email?", options: ["Report it", "Download attachment"], correct: 0 },
+        { q: "What’s a VPN for?", options: ["Secure browsing", "Make games faster"], correct: 0 },
+        { q: "What helps against ransomware?", options: ["Backups", "Pay ransom"], correct: 0 },
+        { q: "Who benefits from awareness training?", options: ["Everyone", "Hackers"], correct: 0 }
+      ],
+      [
+        { q: "What is a strong password?", options: ["Mix of letters, numbers, symbols", "123456"], correct: 0 },
+        { q: "Why update apps?", options: ["Fix vulnerabilities", "Make phone heavier"], correct: 0 },
+        { q: "Why follow IT rules?", options: ["Prevent attacks", "Slow computers"], correct: 0 },
+        { q: "What’s phishing disguised as?", options: ["Legit messages", "Spam only"], correct: 0 },
+        { q: "Who should care about cybersecurity?", options: ["Everyone", "Only hackers"], correct: 0 }
+      ],
+      [
+        { q: "What’s the key to real-world cybersecurity?", options: ["Awareness & practice", "Luck"], correct: 0 },
+        { q: "What’s the role of backups?", options: ["Recover data", "Take up space"], correct: 0 },
+        { q: "What’s a secure behavior?", options: ["Think before clicking", "Click everything"], correct: 0 },
+        { q: "How do companies prevent breaches?", options: ["Training + tools", "Ignore threats"], correct: 0 },
+        { q: "What’s the final goal of cybersecurity?", options: ["Protect people & data", "Make things slower"], correct: 0 }
+      ]
+    ];
+
+    // --- Helpers ---
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    let currentSet = Math.floor(Math.random() * questionSets.length);
+
+    function getRandomSet(excludeIndex) {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * questionSets.length);
+      } while (newIndex === excludeIndex);
+      return newIndex;
+    }
+
+    function loadQuiz(setIndex) {
+      const quizForm = document.getElementById("quizForm");
+      quizForm.innerHTML = "";
+
+      const shuffledQuestions = shuffleArray([...questionSets[setIndex]]);
+
+      shuffledQuestions.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.classList.add("question");
+        div.innerHTML = `${i+1}. ${item.q}`;
+
+        const shuffledOptions = shuffleArray([...item.options]);
+        shuffledOptions.forEach((opt) => {
+          const label = document.createElement("label");
+          const optionIndex = item.options.indexOf(opt);
+          label.innerHTML = `<input type="radio" name="q${i}" value="${optionIndex}"> ${opt}`;
+          div.appendChild(label);
+        });
+
+        quizForm.appendChild(div);
+      });
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Submit Quiz";
+      btn.onclick = submitQuiz;
+      quizForm.appendChild(btn);
+    }
+
+    window.submitQuiz = async function () {
+      const questions = questionSets[currentSet];
+      let score = 0;
+
+      questions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === item.correct) {
+          score++;
+        }
+      });
+
+      if (score >= 3) {
+        document.getElementById("result").innerHTML = 
+          `✅ Congratulations! You passed with ${score}/5 and completed the final lesson!`;
+
+        const user = auth.currentUser;
+        if (user) {
+          const ref = doc(db, "users", user.uid, "progress", "lessons");
+          const snap = await getDoc(ref);
+          let data = snap.exists() ? snap.data() : {};
+          data.lesson6 = true;
+          data.xp = (data.xp || 0) + 50;
+          await setDoc(ref, data);
+        }
+        localStorage.setItem("lessonPassed", "Lesson 6 completed successfully!"); 
+        setTimeout(()=> window.location.href="lessons.html", 2000);
+
+      } else {
+        document.getElementById("result").innerHTML = 
+          `⚠ You scored ${score}/5. A new random set will load...`;
+
+        currentSet = getRandomSet(currentSet);
+
+        setTimeout(() => {
+          loadQuiz(currentSet);
+          document.getElementById("result").innerHTML = "";
+        }, 2500);
+      }
+    };
+
+    // Modal control
+    const quizModal = document.getElementById("quizModal");
+    document.getElementById("startQuizBtn").onclick = () => {
+      quizModal.style.display = "flex";
+      currentSet = Math.floor(Math.random() * questionSets.length);
+      loadQuiz(currentSet);
+    };
+    document.getElementById("quizClose").onclick = () => quizModal.style.display = "none";
+    window.onclick = (e) => { if (e.target === quizModal) quizModal.style.display = "none"; };
+
+    // Protect page
+    onAuthStateChanged(auth, (user) => { if (!user) window.location.href="index.html"; });
+  </script>
+</body>
+</html>

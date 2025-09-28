@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield | Home</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0a0a0a;
+      border-bottom: 1px solid #00ff99;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    .menu-toggle {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #00ff99;
+      background: none;
+      border: none;
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a, nav button {
+      text-decoration: none;
+      color: #00ff99;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav a:hover, nav button:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    #logoutBtn {
+      background: #00ff99;
+      border: none;
+      max-width: 34%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: #0a0a0a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    #logoutBtn:hover {
+      border: solid #fff;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+    }
+
+    /* Mobile Menu */
+    .nav-links { display: flex; }
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00ff99;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background: #111;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.2rem;
+        gap: 1rem;
+        transition: right 0.3s ease;
+        border-left: 1px solid #00ff99;
+        border-bottom: 1px solid #00ff99;
+        width: 220px;
+        box-shadow: -2px 0 10px rgba(0,255,153,0.2);
+      }
+      .nav-links.active { right: 0; }
+      .close-btn { display: block; margin-left: auto; margin-bottom: 0.5rem; }
+      .nav-links a, .nav-links button { width: 100%; text-align: left; }
+    }
+
+    /* Main content */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .content h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    .content p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* Cards */
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      padding: 1.2rem;
+      font-size: 1rem;
+      color: #00ff99;
+      text-decoration: none;
+      transition: 0.3s;
+      width: 260px;         
+      min-height: 180px;    
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card:hover {
+      border: 1px solid #fff;
+      box-shadow: 0 0 12px #00ff99;
+      transform: scale(1.05);
+    }
+
+    .card h2 { margin-bottom: 0.8rem; }
+    .card p, .card div { margin: 0.5rem 0; }
+  
+    .card-icon {
+      max-width: 30%;
+      margin-bottom: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #00ff99;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">CyberShield</div>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <button class="close-btn" id="closeBtn">✖</button>
+      <a href="home.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="results.html">Results</a>
+      <a href="contact.html">Contact Us</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h1>Welcome to CyberShield</h1>
+    <p>
+      Learn cybersecurity in a fun, interactive, and gamified way. Protect yourself online 
+      while unlocking lessons step by step. Begin your journey toward becoming a digital defender.
+    </p>
+
+    <div class="card-container">
+      <!-- Lessons Card -->
+      <a href="lessons.html" class="card">
+        <img src="learning.png" alt="Lessons Icon" class="card-icon">
+        <h2>Lessons</h2>
+        <p id="lessonOverview">Loading...</p>
+      </a>
+
+      <!-- Results Card -->
+      <a href="results.html" class="card">
+        <img src="bar-chart.png" alt="Results Icon" class="card-icon">
+        <h2>Results</h2>
+        <div id="homeResults">Loading...</div>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 CyberShield | Research Project - Antipolo City Senior High School
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Logout
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Hamburger toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    const closeBtn = document.getElementById("closeBtn");
+    menuToggle.addEventListener("click", () => { navLinks.classList.add("active"); });
+    closeBtn.addEventListener("click", () => { navLinks.classList.remove("active"); });
+
+    // Load results and lesson overview
+    async function loadHomeData(user){
+      const ref = doc(db,"users",user.uid,"progress","lessons");
+      const snap = await getDoc(ref);
+
+      if(snap.exists()){
+        const data = snap.data();
+        let xp = data.xp || 0;
+        let lessonsDone = Object.keys(data).filter(k=>k.startsWith("lesson") && data[k]).length;
+        let finalScore = data.finalScore || 0;
+        let passed = data.finalTest ? finalScore >= 20 : false;
+
+        document.getElementById("lessonOverview").textContent = `Completed ${lessonsDone}/6 lessons | ${xp} XP`;
+        document.getElementById("homeResults").innerHTML = `
+          XP: ${xp}/300 <br>
+          Final Score: ${finalScore}/30 <br>
+          ${passed ? "Passed" : "Not Passed"}
+        `;
+      } else {
+        document.getElementById("lessonOverview").textContent = "No lessons completed yet.";
+        document.getElementById("homeResults").textContent = "No results yet.";
+      }
+    }
+
+    onAuthStateChanged(auth,(user)=>{ 
+      if(user){ loadHomeData(user); } 
+      else { window.location.href="index.html"; }
+    });
+  </script>
+</body>
+</html>

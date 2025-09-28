@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberShield | Contact Us</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0a0a0a;
+      border-bottom: 1px solid #00ff99;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff99;
+    }
+    .menu-toggle {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #00ff99;
+      background: none;
+      border: none;
+      display: none;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    nav a, nav button {
+      text-decoration: none;
+      color: #00ff99;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    nav a:hover, nav button:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
+    }
+    #logoutBtn {
+      background: #00ff99;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: #0a0a0a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    #logoutBtn:hover {
+      border: solid #fff;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+    }
+
+    /* Mobile Menu */
+    .nav-links { display: flex; }
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00ff99;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background: #111;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.2rem;
+        gap: 1rem;
+        transition: right 0.3s ease;
+        border-left: 1px solid #00ff99;
+        border-bottom: 1px solid #00ff99;
+        width: 220px;
+        box-shadow: -2px 0 10px rgba(0,255,153,0.2);
+      }
+      .nav-links.active { right: 0; }
+      .close-btn {
+        display: block;
+        margin-left: auto;
+        margin-bottom: 0.5rem;
+      }
+      .nav-links a, .nav-links button {
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    /* Contact Section */
+    .contact-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      justify-content: center;
+      text-align: left;
+      padding: 2rem;
+    }
+    .contact-container h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #00ff99;
+    }
+    .contact-card {
+      background: #111;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 12px rgba(0,255,153,0.3);
+    }
+    .contact-card p {
+      font-size: 1.1rem;
+      margin: 0.8rem 0;
+    }
+    .contact-card a {
+      color: #00ff99;
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #00ff99;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">CyberShield</div>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <button class="close-btn" id="closeBtn">✖</button>
+      <a href="home.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="results.html">Results</a>
+      <a href="contact.html">Contact Us</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <!-- Contact Content -->
+  <main class="contact-container">
+    <h1>Contact Us</h1>
+    <div class="contact-card">
+      <p>Email: <a href="#">garcia@gmail.com</a></p>
+      <p>Phone: <a href="#">09493661323</a></p>
+      <p>Facebook: <a href="https://www.facebook.com/joshua.m.garcia.977421" target="_blank">Joshua M Garcia</a></p>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 CyberShield | Research Project - Antipolo City Senior High School
+  </footer>
+
+  <!-- Script -->
+  <script type="module">
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Hamburger toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    const closeBtn = document.getElementById("closeBtn");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.add("active");
+    });
+    closeBtn.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+    });
+  </script>
+</body>
+</html>

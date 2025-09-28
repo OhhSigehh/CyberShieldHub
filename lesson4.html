@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 4 - Safe Browsing & Social Media Security</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      margin: 0; padding: 20px;
+    }
+    h1, h2 { text-shadow: 0 0 6px #00ff99; text-align:center; }
+    .lesson-box {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #111;
+      padding: 20px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+    .highlight {
+      background: #003322;
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .example {
+      border-left: 4px solid #00ff99;
+      padding-left: 10px;
+      margin: 15px 0;
+      font-style: italic;
+    }
+    button {
+      display:block; margin:20px auto;
+      padding:12px 20px;
+      background:#00ff99; color:#0a0a0a;
+      font-weight:bold; border:none;
+      border-radius:8px; cursor:pointer;
+      transition:0.3s;
+    }
+    button:hover { 
+      background:#009966;
+      color:#fff;
+      box-shadow:0 0 8px #00ff99;
+    }
+  
+    #popupMessage {
+      display:none; 
+      position:fixed; 
+      top:0; left:0; 
+      width:100%; 
+      height:100%;
+      background:rgba(0,0,0,0.85); 
+      justify-content:center;
+      align-items:center; 
+      z-index:3000;
+    }
+  
+    #popupMessage div {
+      background:#111;
+      border:1px solid #00ff99; 
+      border-radius:10px;
+      padding:20px;
+      max-width:400px; 
+      text-align:center;
+    }
+  
+    #popupMessage div h2{
+      color:#00ff99; 
+      text-shadow:0 0 6px #00ff99;
+    }
+  
+    /* Quiz Modal */
+    #quizModal {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    #quizContent {
+      background: #111;
+      width: 85%; max-width: 900px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+    #quizClose {
+      position: absolute; top: 10px; right: 15px;
+      font-size: 1.5rem; cursor: pointer;
+      color: #00ff99; font-weight: bold;
+    }
+    .question { 
+      margin-top: 20px; 
+      font-weight:bold;
+    }
+    label { 
+      display:block;
+      margin:6px 0; 
+      cursor:pointer; 
+    }
+    #result { 
+      text-align:center;
+      margin-top:20px;
+      font-size:1.1rem; 
+    }
+  </style>
+</head>
+<body>
+  <h1>Lesson 4: Safe Browsing & Social Media Security</h1>
+  <div class="lesson-box">
+    <!-- Section 1 -->
+    <div class="lesson-section" id="section1">
+      <h2>Introduction</h2>
+      <p>
+        Every click online can expose you to risks. Unsafe browsing habits and careless social media activity can 
+        lead to malware infections, scams, or stolen identities. In this lesson, you’ll learn how to browse safely and 
+        protect your social accounts.
+      </p>
+      <button onclick="nextSection(1)">Next ➡</button>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="lesson-section" id="section2" style="display:none;">    
+      <h2>Safe Browsing Practices</h2>
+      <ul>
+        <li>Check if a site uses <span class="highlight">HTTPS</span> before entering sensitive information.</li>
+        <li>Avoid clicking on suspicious links or pop-ups.</li>
+        <li>Download apps and files only from trusted sources.</li>
+        <li>Use browser security settings and ad-blockers for protection.</li>
+      </ul>
+      <button onclick="nextSection(2)">Next ➡</button>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="lesson-section" id="section3" style="display:none;">
+      <h2>Social Media Security</h2>
+      <ul>
+        <li>Limit the amount of personal information you share publicly.</li>
+        <li>Enable <span class="highlight">Two-Factor Authentication (2FA)</span> on accounts.</li>
+        <li>Regularly review your <span class="highlight">privacy settings</span>.</li>
+        <li>Think twice before accepting friend requests from strangers.</li>
+      </ul>
+      <button onclick="nextSection(3)">Next ➡</button>
+    </div>
+    
+    <!-- Section 4 -->
+    <div class="lesson-section" id="section4" style="display:none;">
+      <h2>Real-Life Example</h2>
+      <div class="example">
+        A user clicked on a fake link promising free concert tickets. Their social account got hacked and 
+        used to send scams to friends. This could have been avoided with cautious browsing.
+      </div>
+      <button onclick="unlockQuiz()">Finish Lesson</button>
+    </div>
+
+    <button id="startQuizBtn" style="display:none;">Take the Quiz</button>
+  </div>
+
+  <div id="popupMessage">
+    <div>
+      <h2>Lesson Completed</h2>
+      <p>Nice work! You explored safe browsing. Time to prove your skills.</p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+  
+  <!-- Quiz Modal -->
+  <div id="quizModal">
+    <div id="quizContent">
+      <span id="quizClose">&times;</span>
+      <h2>Lesson 4 Quiz</h2>
+      <form id="quizForm"></form>
+      <div id="result"></div>
+    </div>
+  </div>
+
+    <!-- Section Unlock Script -->
+  <script>
+    function nextSection(current) {
+      document.getElementById(`section${current}`).style.display = "none";
+      document.getElementById(`section${current+1}`).style.display = "block";
+    }
+
+    function unlockQuiz() {
+      document.getElementById("startQuizBtn").style.display = "block";
+      document.getElementById("popupMessage").style.display = "flex"; // show custom popup  
+    }
+
+    function closePopup() {
+      document.getElementById("popupMessage").style.display = "none";
+    }
+  </script>
+  
+  <!-- Firebase + Quiz Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- Question Sets (5 sets × 5 questions) ---
+    const questionSets = [
+      [
+        { q: "What does HTTPS indicate?", options: ["Secure connection", "Faster internet"], correct: 0 },
+        { q: "Best source for downloading apps?", options: ["Official stores", "Random sites"], correct: 0 },
+        { q: "What should you do with suspicious links?", options: ["Avoid clicking", "Click to check"], correct: 0 },
+        { q: "What’s a safe browsing tool?", options: ["Ad-blocker", "More pop-ups"], correct: 0 },
+        { q: "Which is safer?", options: ["Trusted websites", "Unverified free sites"], correct: 0 }
+      ],
+      [
+        { q: "What is 2FA?", options: ["Extra login security", "New social feature"], correct: 0 },
+        { q: "Why check privacy settings?", options: ["Control visibility", "Make internet faster"], correct: 0 },
+        { q: "What info is risky to post?", options: ["Home address", "Favorite food"], correct: 0 },
+        { q: "Best action on random friend requests?", options: ["Ignore/report", "Accept all"], correct: 0 },
+        { q: "What’s a phishing link disguised as?", options: ["Legit website", "Weather app"], correct: 0 }
+      ],
+      [
+        { q: "Which is a browsing risk?", options: ["Clicking pop-ups", "Reading news"], correct: 0 },
+        { q: "Why prefer HTTPS?", options: ["Encrypts data", "Loads faster"], correct: 0 },
+        { q: "What can fake contests do?", options: ["Steal accounts", "Give real prizes"], correct: 0 },
+        { q: "Safer login practice?", options: ["Use 2FA", "Share passwords"], correct: 0 },
+        { q: "Which is safer?", options: ["Official social app", "Random APK"], correct: 0 }
+      ],
+      [
+        { q: "What’s the danger of oversharing?", options: ["Identity theft", "More likes"], correct: 0 },
+        { q: "Why review social privacy settings?", options: ["Limit exposure", "Increase speed"], correct: 0 },
+        { q: "What is social engineering?", options: ["Manipulating people", "Building apps"], correct: 0 },
+        { q: "What should you avoid clicking?", options: ["Unknown links", "Trusted sites"], correct: 0 },
+        { q: "Good browsing habit?", options: ["Download from trusted sites", "Install random files"], correct: 0 }
+      ],
+      [
+        { q: "What’s a red flag in a URL?", options: ["Misspelled domain", "Correct spelling"], correct: 0 },
+        { q: "Best defense against fake friend requests?", options: ["Ignore/report", "Accept quickly"], correct: 0 },
+        { q: "Safe posting habit?", options: ["Limit personal info", "Post everything"], correct: 0 },
+        { q: "What is malware often spread through?", options: ["Suspicious downloads", "Reading articles"], correct: 0 },
+        { q: "Best way to protect social media?", options: ["Enable 2FA", "Use weak passwords"], correct: 0 }
+      ]
+    ];
+
+    // --- Helpers ---
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    let currentSet = Math.floor(Math.random() * questionSets.length);
+
+    function getRandomSet(excludeIndex) {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * questionSets.length);
+      } while (newIndex === excludeIndex);
+      return newIndex;
+    }
+
+    function loadQuiz(setIndex) {
+      const quizForm = document.getElementById("quizForm");
+      quizForm.innerHTML = "";
+
+      const shuffledQuestions = shuffleArray([...questionSets[setIndex]]);
+
+      shuffledQuestions.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.classList.add("question");
+        div.innerHTML = `${i+1}. ${item.q}`;
+
+        const shuffledOptions = shuffleArray([...item.options]);
+        shuffledOptions.forEach((opt) => {
+          const label = document.createElement("label");
+          const optionIndex = item.options.indexOf(opt);
+          label.innerHTML = `<input type="radio" name="q${i}" value="${optionIndex}"> ${opt}`;
+          div.appendChild(label);
+        });
+
+        quizForm.appendChild(div);
+      });
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Submit Quiz";
+      btn.onclick = submitQuiz;
+      quizForm.appendChild(btn);
+    }
+
+    window.submitQuiz = async function () {
+      const questions = questionSets[currentSet];
+      let score = 0;
+
+      questions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === item.correct) {
+          score++;
+        }
+      });
+
+      if (score >= 3) {
+        document.getElementById("result").innerHTML = 
+          `✅ Great job! You passed with ${score}/5. Lesson completed.`;
+
+        const user = auth.currentUser;
+        if (user) {
+          const ref = doc(db, "users", user.uid, "progress", "lessons");
+          const snap = await getDoc(ref);
+          let data = snap.exists() ? snap.data() : {};
+          data.lesson4 = true;
+          data.lesson5 = true; // unlock next
+          data.xp = (data.xp || 0) + 50;
+          await setDoc(ref, data);
+        }
+        localStorage.setItem("lessonPassed", "Lesson 4 completed successfully!"); 
+        setTimeout(()=> window.location.href="lessons.html", 2000);
+
+      } else {
+        document.getElementById("result").innerHTML = 
+          `⚠ You scored ${score}/5. A new random set will load...`;
+
+        currentSet = getRandomSet(currentSet);
+
+        setTimeout(() => {
+          loadQuiz(currentSet);
+          document.getElementById("result").innerHTML = "";
+        }, 2500);
+      }
+    };
+
+    // Modal control
+    const quizModal = document.getElementById("quizModal");
+    document.getElementById("startQuizBtn").onclick = () => {
+      quizModal.style.display = "flex";
+      currentSet = Math.floor(Math.random() * questionSets.length);
+      loadQuiz(currentSet);
+    };
+    document.getElementById("quizClose").onclick = () => quizModal.style.display = "none";
+    window.onclick = (e) => { if (e.target === quizModal) quizModal.style.display = "none"; };
+
+    // Protect page
+    onAuthStateChanged(auth, (user) => { if (!user) window.location.href="index.html"; });
+  </script>
+</body>
+</html>

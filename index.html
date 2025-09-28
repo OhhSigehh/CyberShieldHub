@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <title>CS | Login/Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0a0a0a;
+      border-bottom: 1px solid #00ff99;
+      color: #00ff99;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #00ff99;
+    }
+
+    /* Navbar button */
+    #auth-btn {
+      background: #00ff99;
+      border: 1px solid #00ff99;
+      padding: 0.4rem 0.9rem;
+      border-radius: 0.5rem;
+      color: #0a0a0a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    #auth-btn:hover {
+      background: #00ff97;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+      border: solid;
+    }
+
+    /* About / Mission Section */
+    .about-section {
+      padding: 2rem;
+      text-align: center;
+      background: #0a0a0a;
+      color: #00ff99;
+    }
+
+    .about-section h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 8px #00ff99;
+    }
+
+    .about-section p {
+      max-width: 800px;
+      margin: 0 auto 1.5rem auto;
+      line-height: 1.6;
+    }
+
+    .about-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 2rem auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 900px;
+    }
+
+    .about-section li {
+      flex: 1 1 220px;
+      max-width: 250px;
+      background: #111;
+      color: #00ff99;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      text-align: center;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .about-section li img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    .about-section li p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+  
+    .about-section li:hover {  
+      box-shadow: 0 0 8px #00ff99;
+      transform: scale(1.05);
+      cursor: default;
+    }
+
+    /* Tabs */
+    .tab-buttons {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      background: #00ff99;
+      border: 1px solid #00ff99;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: #0a0a0a;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: #00ff99;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+      border: solid white;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .pfp {
+      border:1px solid #00ff99;
+      background:#111; 
+      border-radius:8px; 
+      box-shadow: 0 0 8px #00ff99;
+      padding:1rem; 
+      width:180px;
+      text-align:center;
+    }
+  
+    .pfp img {
+      width:100px;
+      height:100px;
+      border-radius:8px;
+      border:1px solid #00ff99;
+      object-fit:cover;
+    }
+    .pfp h3 {
+      margin:0.5rem 0; 
+      color:#00ff99;
+    }
+  
+    .pfp p {
+      font-size:1rem;
+      color:#00ff99;
+    }
+
+    /* ------------------ AUTH POPUP ------------------ */
+    #auth-section {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    #auth-section .box {
+      background: #111;
+      padding: 25px;
+      border-radius: 10px;
+      border: 1px solid #00ff99;
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.3s ease-in-out;
+    }
+
+    #auth-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #00ff99;
+      font-weight: bold;
+    }
+
+    #auth-close:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .form-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      display: none;
+    }
+    .form-container.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .box input {
+      width: 90%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #00ff99;
+      border-radius: 6px;
+      background: #0a0a0a;
+      color: #00ff99;
+      font-size: 1.1rem;
+    }
+    input::placeholder { color: #497a00aa; }
+
+    .box button {
+      width: 95%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #00ff99;
+      color: #0a0a0a;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 1rem;
+    }
+    .box button:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+      border: solid;
+    }
+
+    .box a {
+      color: #00ff99;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 15px;
+      text-decoration: none;
+    }
+    .box a:hover { text-decoration: underline; }
+  
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #00ff99;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    #message { margin-top: 12px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">CyberShield</div>
+    <button id="auth-btn">Login / Register</button>
+  </header>
+
+  <!-- About Section with Tabs -->
+  <section class="about-section">
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="vision">Vision/Mission</button>
+      <button class="tab-btn" data-tab="objectives">Objectives</button>
+      <button class="tab-btn" data-tab="about">About</button>
+    </div>
+
+    <!-- Vision -->
+    <div id="vision" class="tab-content active">
+      <h1>Our Vision</h1>
+      <p>
+        To empower students with the knowledge, awareness, and resilience needed 
+        to thrive in a digitally connected world by fostering a culture of cybersecurity 
+        and responsible online behavior.
+      </p>
+      <h1>Our Mission</h1>
+      <p>
+        CyberShield aims to enhance the cybersecurity literacy of Antipolo City Senior High School students 
+        by providing an interactive, gamified, and research-based platform. Through engaging lessons, quizzes, 
+        and real-world scenarios, we strive to:
+      </p>
+      <ul>
+        <li>
+          <img src="awareness.png" alt="Awareness Icon">
+          <p>Strengthen students’ awareness of common cyber threats.</p>
+        </li>
+        <li>
+          <img src="cyber-security.png" alt="Security Icon">
+          <p>Build resilience against phishing, social engineering, and malicious attacks.</p>
+        </li>
+        <li>
+          <img src="promote.png" alt="Digital Practices Icon">
+          <p>Promote responsible and secure digital practices in academic and personal life.</p>
+        </li>
+        <li>
+          <img src="teacher.png" alt="Teachers Icon">
+          <p>Support teachers and institutions with a validated tool for cybersecurity education.</p>
+        </li>       
+      </ul>
+    </div>
+
+    <!-- Objectives -->
+    <div id="objectives" class="tab-content">      
+      <h1>Our Objectives</h1>
+      <p>
+        The CyberShield research project is designed to strengthen cybersecurity awareness 
+        among Antipolo City Senior High School students. Specifically, it aims to:
+      </p>
+      <ul>
+        <li><img src="pin.png" alt="Pin"><p>Assess the current level of cybersecurity awareness of senior high school students.</p></li>
+        <li><img src="pin.png" alt="Pin"><p>Develop an interactive and gamified learning platform focused on cybersecurity education.</p></li>       
+        <li><img src="pin.png" alt="Pin"><p>Enhance students’ knowledge and skills on identifying and preventing common cyber threats.</p></li>
+        <li><img src="pin.png" alt="Pin"><p>Evaluate the effectiveness of the CyberShield website as a cybersecurity learning tool.</p></li>
+      </ul>
+    </div>
+    
+    <!-- About -->
+    <div id="about" class="tab-content">
+      <h1>About CyberShield</h1>
+      <p>
+        CyberShield is a web-based platform developed to strengthen cybersecurity 
+        awareness among Antipolo City Senior High School students. It integrates interactive 
+        lessons, gamified quizzes, and real-world simulations to make cybersecurity education 
+        engaging and effective.
+      </p>
+      <p>
+        This project is not only aimed at students but also supports teachers and academic       
+        institutions by providing a validated tool for improving digital literacy and 
+        responsible online practices.
+      </p>
+      <ul>
+        <li><img src="console.png" alt="Game"><p>Gamified lessons encourage active learning and retention.</p></li>
+        <li><img src="bar-chart.png" alt="Graph"><p>Helps evaluate the effectiveness of cybersecurity education.</p></li>
+        <li><img src="school.png" alt="School"><p>Supports schools in fostering a safer digital environment.</p></li>                 
+      </ul>
+      
+      <h1>Developers and Researchers</h1>
+      <p>
+        This project was developed by the following senior high school researchers 
+        from Antipolo City Senior High School:
+      </p>
+      
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+        <!-- Researcher Card -->
+        <div class="pfp">
+          <img src="juswa.png" alt="Profile Pic">
+          <h3>Joshua Garcia</h3>
+          <p>Lead Researcher</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>Leo John Aducal</h3>
+          <p>Secretary</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>Edril Castro</h3>
+          <p>Research Member</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>Michelle Grino</h3>
+          <p>Research Member</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>Marc Joel Gabriel</h3>
+          <p>Research Member</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>MJ Langamin</h3>
+          <p>Research Member</p>
+        </div>
+        
+        <div class="pfp">
+          <img src="pfp.jpeg" alt="Profile Pic">
+          <h3>Jhon Deniel Rodriguiez</h3>
+          <p>Research Member</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------ AUTH POPUP ------------------ -->
+  <section id="auth-section">
+    <div class="box">
+      <span id="auth-close">&times;</span> <!-- Close button -->
+
+      <!-- Login -->
+      <div id="loginForm" class="form-container active">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Enter your email" required />
+        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+        <button id="loginBtn">Login</button>
+        <a onclick="showRegister()">Don't have an account? Signup</a>
+      </div>
+
+      <!-- Register -->
+      <div id="registerForm" class="form-container">
+        <h2>Signup</h2>
+        <input type="text" id="regName" placeholder="Enter your name (ex.JuanICT1202)" required />
+        <input type="email" id="regEmail" placeholder="Enter your email" required />
+        <input type="password" id="regPassword" placeholder="Create a password" required />
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required />
+        <button id="registerBtn">Signup</button>
+        <a onclick="showLogin()">Already have an account? Login</a>
+      </div>
+
+      <p id="message"></p>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    © 2025 CyberShield | Research Project - Antipolo City Senior High School
+  </footer>
+  <script>
+    // Toggle auth popup
+    const authSection = document.getElementById("auth-section");
+    const authBtn = document.getElementById("auth-btn");
+    const authClose = document.getElementById("auth-close");
+
+    authBtn.addEventListener("click", () => {
+      authSection.style.display = "flex";
+    });
+
+    authClose.addEventListener("click", () => {
+      authSection.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === authSection) {
+        authSection.style.display = "none";
+      }
+    });
+
+    // Smooth form switch
+    window.showRegister = () => {
+      document.getElementById("loginForm").classList.remove("active");
+      document.getElementById("registerForm").classList.add("active");
+      document.getElementById("message").innerText = "";
+    };
+    window.showLogin = () => {
+      document.getElementById("registerForm").classList.remove("active");
+      document.getElementById("loginForm").classList.add("active");
+      document.getElementById("message").innerText = "";
+    };
+
+    // Tabs for About/Mission
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach(b => b.classList.remove("active"));
+        tabContents.forEach(c => c.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+  </script>
+  <!-- Firebase Auth -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const messageBox = document.getElementById("message");
+
+    // Register
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      const name = document.getElementById("regName").value;
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
+      const confirm = document.getElementById("confirmPassword").value;
+
+      // Check empty fields
+      if (!name || !email || !password || !confirm) {
+        messageBox.innerText = "⚠ Please fill in all fields.";
+        return;
+      }
+
+      // Check if passwords match
+      if (password !== confirm) {
+        messageBox.innerText = "⚠ Passwords do not match!";
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          createdAt: serverTimestamp(),
+          email: user.email,
+          name: name
+        });
+
+        localStorage.setItem("userUid", user.uid);
+        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem("userName", name);
+
+        messageBox.innerText = "Registered successfully! Redirecting...";
+        setTimeout(() => window.location.href = "home.html", 1500);
+      } catch (err) {
+        messageBox.innerText = err.message;
+      }
+    });
+
+    // Login
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          localStorage.setItem("userName", userData.name);
+          localStorage.setItem("userEmail", userData.email);
+        }
+
+        localStorage.setItem("userUid", user.uid);
+
+        messageBox.innerText = "Login successful! Redirecting...";
+        setTimeout(() => window.location.href = "home.html", 1500);
+      } catch (err) {
+        messageBox.innerText = err.message;
+      }
+    });
+
+    // Auto redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "home.html";
+      }
+    });
+  </script>
+</body>
+</html>

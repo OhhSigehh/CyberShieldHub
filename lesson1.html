@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1 - Cyber Basics</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      margin: 0; padding: 20px;
+    }
+    h1, h2 { text-shadow: 0 0 6px #00ff99; text-align:center; }
+    .lesson-box {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #111;
+      padding: 20px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+    .highlight {
+      background: #003322;
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .example {
+      border-left: 4px solid #00ff99;
+      padding-left: 10px;
+      margin: 15px 0;
+      font-style: italic;
+    }
+    button {
+      display:block; margin:20px auto;
+      padding:12px 20px;
+      background:#00ff99; color:#0a0a0a;
+      font-weight:bold; border:none;
+      border-radius:8px; cursor:pointer;
+      transition:0.3s;
+    }
+    button:hover { 
+      background:#009966;
+      color:#fff;
+      box-shadow:0 0 8px #00ff99;
+    }
+  
+    #popupMessage {
+      display:none; 
+      position:fixed; 
+      top:0; left:0; 
+      width:100%; 
+      height:100%;
+      background:rgba(0,0,0,0.85); 
+      justify-content:center;
+      align-items:center; 
+      z-index:3000;
+    }
+  
+    #popupMessage div {
+      background:#111;
+      border:1px solid #00ff99; 
+      border-radius:10px;
+      padding:20px;
+      max-width:400px; 
+      text-align:center;
+    }
+  
+    #popupMessage div h2{
+      color:#00ff99; 
+      text-shadow:0 0 6px #00ff99;
+    }
+  
+    /* Quiz Modal */
+    #quizModal {
+      display: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    #quizContent {
+      background: #111;
+      width: 85%; max-width: 900px;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+    #quizClose {
+      position: absolute; top: 10px; right: 15px;
+      font-size: 1.5rem; cursor: pointer;
+      color: #00ff99; font-weight: bold;
+    }
+    .question { 
+      margin-top: 20px; 
+      font-weight:bold;
+    }
+    label { 
+      display:block;
+      margin:6px 0; 
+      cursor:pointer; 
+    }
+    #result { 
+      text-align:center;
+      margin-top:20px;
+      font-size:1.1rem; 
+    }
+  </style>
+</head>
+<body>
+  <h1>Lesson 1: Cyber Basics</h1>
+  <div class="lesson-box">
+    <!-- Section 1 -->
+    <div class="lesson-section" id="section1">
+      <h2>Introduction</h2>
+      <p>Welcome to Cyber Basics! In this lesson, you’ll learn about common online threats, 
+        safe browsing, and the foundations of cybersecurity.</p>
+      <button onclick="nextSection(1)">Next ➡</button>
+    </div>   
+    
+    <!-- Section 2 -->
+    <div class="lesson-section" id="section2" style="display:none;">
+      <h2>Key Concepts</h2>
+      <ul>
+        <li><span class="highlight">Cybersecurity:</span> Protecting devices, networks, and data from attacks.</li>
+        <li><span class="highlight">Threat:</span> Anything that can harm your data or privacy.</li>
+        <li><span class="highlight">Safe Practices:</span> Using strong passwords, updating devices, and avoiding scams.</li>
+      </ul>
+      <button onclick="nextSection(2)">Next ➡</button>
+    </div>
+    
+    <!-- Section 3 -->
+    <div class="lesson-section" id="section3" style="display:none;">
+      <h2>Examples</h2>
+      <div class="example">
+        A hacker sends a fake email pretending to be your bank. This is called <span class="highlight">phishing</span>. 
+        If you click the link and enter your password, your account could be stolen.
+      </div>
+      <button onclick="nextSection(3)">Next ➡</button>
+    </div>
+    
+    <!-- Section 4 -->
+    <div class="lesson-section" id="section4" style="display:none;">
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Never share your password with others.</li>
+        <li>Keep your software and apps updated.</li>
+        <li>Be cautious with emails or links from strangers.</li>
+      </ul>
+      <button onclick="unlockQuiz()">Finish Lesson</button>
+    </div>
+    
+    <button id="startQuizBtn" style="display:none;">Take the Quiz</button>
+  </div>
+
+  <!-- Custom Popup -->
+  <div id="popupMessage">
+    <div>
+      <h2>Lesson Completed</h2>
+      <p>Great job! You’ve completed the basics. Your first quiz is now unlocked.</p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div id="quizModal">
+    <div id="quizContent">
+      <span id="quizClose">&times;</span>
+      <h2>Lesson 1 Quiz</h2>
+      <form id="quizForm"></form>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <!-- Section Unlock Script -->
+  <script>
+    function nextSection(current) {
+      document.getElementById(`section${current}`).style.display = "none";
+      document.getElementById(`section${current+1}`).style.display = "block";
+    }
+
+    function unlockQuiz() {
+      document.getElementById("startQuizBtn").style.display = "block";
+      document.getElementById("popupMessage").style.display = "flex"; // show custom popup  
+    }
+
+    function closePopup() {
+      document.getElementById("popupMessage").style.display = "none";
+    }
+  </script>
+  
+  <!-- Firebase + Quiz Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = { 
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 5 sets of 5 questions
+    const questionSets = [
+      [
+        { q: "Which of these is an example of phishing?", options: ["Funny YouTube video", "Email from your bank asking password"], correct: 1 },
+        { q: "When using free public Wi-Fi, what should you do?", options: ["Login without worries", "Use a VPN or avoid sensitive logins"], correct: 1 },
+        { q: "What’s a strong practice for passwords?", options: ["Use your birthday", "Use unique complex passwords"], correct: 1 },
+        { q: "Which of the following is a type of malware?", options: ["Trojan Horse", "Google Chrome"], correct: 0 },
+        { q: "Which is the safest action if you receive a suspicious link?", options: ["Click and see what happens", "Ignore or report the message"], correct: 1 }
+      ],
+      [
+        { q: "Which one is malware?", options: ["Trojan Horse", "Notepad"], correct: 0 },
+        { q: "Safe password example?", options: ["qwerty123", "M!ndStrong#2025"], correct: 1 },
+        { q: "What’s the best response to a prize scam email?", options: ["Click the link to claim", "Ignore and report as phishing"], correct: 1 },
+        { q: "Which connection is safest for online banking?", options: ["Public Wi-Fi", "Your secured home Wi-Fi"], correct: 1 },
+        { q: "What’s the first step if your account is hacked?", options: ["Delete the account", "Change password + enable 2FA"], correct: 1 }
+      ],
+      [
+        { q: "Which of these is a cyber threat?", options: ["Phishing emails", "Online games"], correct: 0 },
+        { q: "What’s the safest way to download apps?", options: ["From official app stores", "From random websites"], correct: 0 },
+        { q: "What is the purpose of 2FA?", options: ["Adds another security layer", "Makes login slower"], correct: 0 },
+        { q: "Which one is suspicious?", options: ["Bank email with grammar errors", "Email from your teacher"], correct: 0 },
+        { q: "What’s a secure browser behavior?", options: ["Look for HTTPS", "Ignore certificate warnings"], correct: 0 }
+      ],
+      [
+        { q: "Strong passwords should include:", options: ["Only letters", "Mix of letters, numbers & symbols"], correct: 1 },
+        { q: "Which device update behavior is safest?", options: ["Update immediately", "Delay for months"], correct: 0 },
+        { q: "What should you do with unknown USB drives?", options: ["Plug in to check", "Avoid using/report it"], correct: 1 },
+        { q: "Which website URL is safer?", options: ["http://example.com", "https://example.com"], correct: 1 },
+        { q: "Best practice for school Wi-Fi logins?", options: ["Share password with friends", "Keep password private"], correct: 1 }
+      ],
+      [
+        { q: "Which one is a safe online habit?", options: ["Sharing all personal info online", "Limiting info you share"], correct: 1 },
+        { q: "If your browser warns of an unsafe site, you should:", options: ["Ignore and continue", "Leave immediately"], correct: 1 },
+        { q: "What’s phishing’s main goal?", options: ["To entertain", "To steal your info"], correct: 1 },
+        { q: "Which of these is an example of social engineering?", options: ["A stranger tricking you for your password", "Downloading from Google Play"], correct: 0 },
+        { q: "Why is using unique passwords important?", options: ["One hack won’t affect other accounts", "It looks cool"], correct: 0 }
+      ]
+    ];
+
+    // --- Helpers ---
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    let currentSet = Math.floor(Math.random() * questionSets.length);
+
+    function getRandomSet(excludeIndex) {
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * questionSets.length);
+      } while (newIndex === excludeIndex);
+      return newIndex;
+    }
+
+    function loadQuiz(setIndex) {
+      const quizForm = document.getElementById("quizForm");
+      quizForm.innerHTML = "";
+
+      // shuffle questions
+      const shuffledQuestions = shuffleArray([...questionSets[setIndex]]);
+
+      shuffledQuestions.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.classList.add("question");
+        div.innerHTML = `${i+1}. ${item.q}`;
+
+        // shuffle options
+        const shuffledOptions = shuffleArray([...item.options]);
+        shuffledOptions.forEach((opt) => {
+          const label = document.createElement("label");
+          const optionIndex = item.options.indexOf(opt); 
+          label.innerHTML = `<input type="radio" name="q${i}" value="${optionIndex}"> ${opt}`;
+          div.appendChild(label);
+        });
+
+        quizForm.appendChild(div);
+      });
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Submit Quiz";
+      btn.onclick = submitQuiz;
+      quizForm.appendChild(btn);
+    }
+
+    window.submitQuiz = async function () {
+      const questions = questionSets[currentSet];
+      let score = 0;
+
+      questions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === item.correct) {
+          score++;
+        }
+      });
+
+      if (score >= 3) {
+        document.getElementById("result").innerHTML = 
+          `✅ Great job! You passed with ${score}/5. Lesson completed.`;
+
+        const user = auth.currentUser;
+        if (user) {
+          const ref = doc(db, "users", user.uid, "progress", "lessons");
+          const snap = await getDoc(ref);
+          let data = snap.exists() ? snap.data() : {};
+          data.lesson1 = true;
+          data.lesson2 = true;
+          data.xp = (data.xp || 0) + 50;
+          await setDoc(ref, data);
+        }
+        localStorage.setItem("lessonPassed", "Lesson 1 completed successfully!"); 
+        setTimeout(()=> window.location.href="lessons.html", 2000);
+
+      } else {
+        document.getElementById("result").innerHTML = 
+          `⚠ You scored ${score}/5. A new random question set will load...`;
+
+        currentSet = getRandomSet(currentSet);
+
+        setTimeout(() => {
+          loadQuiz(currentSet);
+          document.getElementById("result").innerHTML = "";
+        }, 2500);
+      }
+    };
+  
+    function nextSection(current) {
+      document.getElementById(`section${current}`).style.display = "none";
+      document.getElementById(`section${current+1}`).style.display = "block";
+    }
+  
+    function unlockQuiz() {
+      document.getElementById("startQuizBtn").style.display = "block";
+      alert("✅ You’ve completed the lesson content! Now you can take the quiz.");
+    }
+
+    // Modal control
+    const quizModal = document.getElementById("quizModal");
+    document.getElementById("startQuizBtn").onclick = () => {
+      quizModal.style.display = "flex";
+      currentSet = Math.floor(Math.random() * questionSets.length);
+      loadQuiz(currentSet);
+    };
+    document.getElementById("quizClose").onclick = () => quizModal.style.display = "none";
+    window.onclick = (e) => { if (e.target === quizModal) quizModal.style.display = "none"; };
+
+    // Protect page
+    onAuthStateChanged(auth, (user) => { if (!user) window.location.href="index.html"; });
+  </script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberShield | Lessons</title>
+  <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      background: #0a0a0a;
+      color: #00ff99;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    /* Mobile Menu */
+    .nav-links {
+      display: flex;
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00ff99;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+  
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #0a0a0a;
+      border-bottom: 1px solid #00ff99;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #00ff99;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    /* Hamburger menu button */
+    .menu-toggle {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #00ff99;
+      background: none;
+      border: none;
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a, nav button {
+      text-decoration: none;
+      color: #00ff99;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav a:hover, nav button:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    #logoutBtn {
+      background: #00ff99;
+      border: none;
+      max-width: 34%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: #0a0a0a;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    #logoutBtn:hover {
+      border: solid #fff;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+    }
+
+    /* Mobile Menu */
+    .nav-links {
+      display: flex;
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00ff99;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+  
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background: #111;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.2rem;
+        gap: 1rem;
+        transition: right 0.3s ease;
+        border-left: 1px solid #00ff99;
+        border-bottom: 1px solid #00ff99;
+        width: 220px;
+        height: auto; /* Only take space of items */
+        box-shadow: -2px 0 10px rgba(0,255,153,0.2);
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .close-btn {
+        display: block;
+        margin-left: auto;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-links a, .nav-links button {
+        width: 100%;
+        text-align: left;
+      }
+    }
+
+    /* Lessons */
+    .lessons-container {
+      flex: 1;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .lessons-container h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #00ff99;
+    }
+
+    /* XP bar */
+    #xp-bar {
+      width: 80%;
+      max-width: 600px;
+      margin: 1rem auto 2rem auto;
+      height: 20px;
+      background: #222;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #xp-fill {
+      width: 0%;
+      height: 100%;
+      background: #00ff99;
+      transition: width 0.5s ease;
+    }
+
+    /* Lesson Cards */
+    .lesson-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .lesson-card {
+      background: #111;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 1.5rem;
+      width: 280px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .lesson-card.locked {
+      opacity: 0.5;
+      border-color: #444;
+    }
+
+    .lesson-btn {
+      background: #00ff99;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1rem;
+      transition: 0.3s;
+    }
+
+    .lesson-btn:hover:enabled {
+      background: #009966;
+      color: #fff;
+      border: 1px solid #fff;
+      box-shadow: 0 0 8px #00ff99;
+      transform: scale(1.05);
+    }
+
+    .lesson-btn:disabled {
+      background: #333;
+      cursor: not-allowed;
+      color: #888;
+    }
+
+    /*Final Test*/
+    .finaltest{
+      display:none; 
+      margin: 1rem auto; 
+      padding: 0.8rem 1.5rem; 
+      background:#00ff99; 
+      border:none;
+      border-radius:6px;
+      font-weight:bold; 
+      cursor:pointer;
+    }
+  
+    /* Confirmation popup buttons */
+    #confirmPopup .popup-content button {
+      padding: 0.5rem 1.2rem;
+      background: #00ff99;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #confirmPopup .popup-content button:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+      border: 1px solid #fff
+    }
+    #confirmPopup #confirmNo {
+      background: #ff3333;
+    }
+    #confirmPopup #confirmNo:hover {
+      background: #cc0000;
+      box-shadow: 0 0 10px #ff3333;
+      border: 1px solid #fff
+    }
+
+    /* Popup Modal */
+    .popup-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+  
+    .popup-content {
+      background: #111;
+      border: 2px solid #00ff99;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 350px;
+      color: #00ff99;
+      box-shadow: 0 0 15px #00ff99;
+    }
+  
+    .popup-content button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.2rem;
+      background: #00ff99;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .popup-content button:hover {
+      background: #009966;
+      color: #fff;
+      border: 1px solid #fff
+      box-shadow: 0 0 10px #00ff99;
+    }
+   
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #00ff99;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">CyberShield</div>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <button class="close-btn" id="closeBtn">✖</button>
+      <a href="home.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+      <a href="results.html">Results</a>
+      <a href="contact.html">Contact Us</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
+  </header>
+
+  <!-- Lessons -->
+  <main class="lessons-container">
+    <h1>Cyber Lessons</h1>
+    <div id="xp-bar"><div id="xp-fill"></div></div>
+    <p id="xp-text">XP: 0 / 250</p>
+
+    <!-- Final Test button (hidden at first) -->
+    <button id="finalTestBtn" class="finaltest">
+      Take Final Test
+    </button>
+    
+    <!-- Reset Progress button -->
+    <button id="resetProgressBtn" style="display:block; margin: 1rem auto; padding: 0.7rem 1.2rem; 
+      background:#ff3333; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
+      Reset Progress
+    </button>
+    
+    <!-- Lessons Lists -->
+    <div class="lesson-cards">
+      <!-- Lesson 1 -->
+      <div class="lesson-card">
+        <h2>Lesson 1: Cyber Basics</h2>
+        <p>Introduction to online safety and common threats.</p>
+        <button class="lesson-btn" data-lesson="lesson1" onclick="window.location.href='lesson1.html'">Start Lesson</button>
+      </div>
+      
+      <!-- Lesson 2 -->
+      <div class="lesson-card locked">
+        <h2>Lesson 2: Online Privacy & Digital Footprint</h2>
+        <p>Protect your identity and manage your digital footprint.</p>
+        <button class="lesson-btn" data-lesson="lesson2" onclick="window.location.href='lesson2.html'" disabled>Locked</button>
+      </div>
+      
+      <!-- Lesson 3 -->
+      <div class="lesson-card locked">
+        <h2>Lesson 3: Cybersecurity Threats & Defense Strategies</h2>
+        <p>Understand attacks and learn to defend against them.</p>
+        <button class="lesson-btn" data-lesson="lesson3" onclick="window.location.href='lesson3.html'" disabled>Locked</button>
+      </div>
+      
+      <!-- Lesson 4 -->
+      <div class="lesson-card locked">
+        <h2>Lesson 4: Safe Browsing & Social Media Security</h2>
+        <p>Stay secure online and avoid unsafe sites or scams.</p>
+        <button class="lesson-btn" data-lesson="lesson4" onclick="window.location.href='lesson4.html'" disabled>Locked</button>
+      </div>
+      
+      <!-- Lesson 5 -->
+      <div class="lesson-card locked">
+        <h2>Lesson 5: Data Protection & Encryption</h2>
+        <p>Learn how encryption secures data and why it matters.</p>
+        <button class="lesson-btn" data-lesson="lesson5" onclick="window.location.href='lesson5.html'" disabled>Locked</button>
+      </div>
+      
+      <!-- Lesson 6 -->
+      <div class="lesson-card locked">
+        <h2>Lesson 6: Cybersecurity in the Real World</h2>
+        <p>Apply knowledge to real-life cyber defense situations.</p>
+        <button class="lesson-btn" data-lesson="lesson6" onclick="window.location.href='lesson6.html'" disabled>Locked</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Confirmation Popup for Reset -->
+  <div id="confirmPopup" class="popup-modal">
+    <div class="popup-content">
+      <p id="confirmMessage">Are you sure you want to reset all progress? This cannot be undone.</p>
+      <div style="margin-top:1rem; display:flex; justify-content:center; gap:1rem;">
+        <button id="confirmYes">Yes</button>
+        <button id="confirmNo">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Modal For Reset and Lesson Return -->
+  <div id="popupModal" class="popup-modal">
+    <div class="popup-content">
+      <p id="popupMessage"></p>
+      <button id="closePopup">OK</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 CyberShield | Research Project - Antipolo City Senior High School
+  </footer>
+
+  <!-- Firebase Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
+      authDomain: "cshield-41518.firebaseapp.com",
+      projectId: "cshield-41518",
+      storageBucket: "cshield-41518.firebasestorage.app",
+      messagingSenderId: "1055312271929",
+      appId: "1:1055312271929:web:c3415a674782ade5550be8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Load progress
+    async function loadProgress() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const ref = doc(db, "users", user.uid, "progress", "lessons");
+      const snap = await getDoc(ref);
+
+      let progress = { lesson1: true, lesson2: false, lesson3: false, xp: 0 };
+      if (snap.exists()) {
+        progress = snap.data();
+      } else {
+        await setDoc(ref, progress);
+      }
+
+      // XP thresholds for each lesson
+      const unlockThresholds = {
+        lesson1: 0,
+        lesson2: 50,
+        lesson3: 100,
+        lesson4: 150,
+        lesson5: 200,
+        lesson6: 250
+      };
+      Object.keys(unlockThresholds).forEach(key => {
+        const btn = document.querySelector(`[data-lesson="${key}"]`);
+        if (btn && (progress.xp || 0) >= unlockThresholds[key]) {
+          btn.disabled = false;
+          btn.textContent = "Start Lesson";
+          btn.closest(".lesson-card").classList.remove("locked");
+        }
+      });
+
+      // Update XP bar
+      const requiredXP = 300; // required for course completion
+      const xp = progress.xp || 0;
+      const percent = Math.min((xp / requiredXP) * 100, 100);
+
+      document.getElementById("xp-fill").style.width = `${percent}%`;
+      document.getElementById("xp-text").textContent = `XP: ${xp} / ${requiredXP}`;
+
+      // Show Final Test button if course is complete
+      if (xp >= requiredXP) {
+        const finalBtn = document.getElementById("finalTestBtn");
+        finalBtn.style.display = "block";
+        finalBtn.onclick = () => {
+          window.location.href = "finaltest.html"; // <-- link to your final test page
+        };
+      }
+    }
+  
+    // Popup utility
+    function showPopup(message, callback) {
+      const popup = document.getElementById("popupModal");
+      const msgBox = document.getElementById("popupMessage");
+      const closeBtn = document.getElementById("closePopup");
+      
+      msgBox.textContent = message;
+      popup.style.display = "flex";
+
+      closeBtn.onclick = () => {
+        popup.style.display = "none";
+        if (callback) callback();
+      };
+    }
+    
+    // Reset Progress Button with custom popup
+    const resetBtn = document.getElementById("resetProgressBtn");
+    const confirmPopup = document.getElementById("confirmPopup");
+    const confirmYes = document.getElementById("confirmYes");
+    const confirmNo = document.getElementById("confirmNo");
+
+    resetBtn.addEventListener("click", () => {
+      confirmPopup.style.display = "flex"; // show confirmation popup
+    });
+
+    // Handle Yes/No
+    confirmYes.addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      
+    const ref = doc(db, "users", user.uid, "progress", "lessons");
+      // Reset back to defaults
+      let resetData = { 
+        lesson1: true, 
+        lesson2: false, 
+        lesson3: false, 
+        lesson4: false, 
+        lesson5: false, 
+        lesson6: false, 
+        xp: 0 
+      };
+      
+      await setDoc(ref, resetData);
+      showPopup("Progress has been reset.", () => window.location.reload());
+    });
+
+    confirmNo.addEventListener("click", () => {
+      confirmPopup.style.display = "none"; // close popup without resetting
+    });
+  
+    // Hamburger toggle
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    const closeBtn = document.getElementById("closeBtn");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.add("active");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+    });
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        loadProgress();
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+  
+    // Show popup if redirected from lesson
+    const lessonMsg = localStorage.getItem("lessonPassed");
+    if (lessonMsg) {
+      showPopup(lessonMsg);
+      localStorage.removeItem("lessonPassed");      
+    }
+
+  </script>
+</body>
+</html>
