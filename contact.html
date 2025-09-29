@@ -91,8 +91,7 @@
       .menu-toggle { display: block; }
       .nav-links {
         position: fixed;
-        top: 0;
-        right: -100%;
+        top: 0; right: -100%;
         background: #111;
         flex-direction: column;
         align-items: flex-start;
@@ -102,6 +101,7 @@
         border-left: 1px solid #00ff99;
         border-bottom: 1px solid #00ff99;
         width: 220px;
+        height: auto;
         box-shadow: -2px 0 10px rgba(0,255,153,0.2);
       }
       .nav-links.active { right: 0; }
@@ -116,37 +116,89 @@
       }
     }
 
-    /* Contact Section */
+    /* Contact Container */
     .contact-container {
       flex: 1;
       display: flex;
-      flex-direction: column;
-      align-items: left;
       justify-content: center;
-      text-align: left;
+      align-items: center;
       padding: 2rem;
-    }
-    .contact-container h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 6px #00ff99;
     }
     .contact-card {
       background: #111;
       border: 1px solid #00ff99;
       border-radius: 10px;
       padding: 2rem;
-      max-width: 500px;
-      width: 90%;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
       box-shadow: 0 0 12px rgba(0,255,153,0.3);
     }
-    .contact-card p {
-      font-size: 1.1rem;
-      margin: 0.8rem 0;
+    .contact-card h2 {
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #00ff99;
     }
-    .contact-card a {
+    .contact-card p {
+      margin: 0.5rem 0;
+    }
+
+    /* Contact Form */
+    .contact-form {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.8rem;
+      border: 1px solid #00ff99;
+      border-radius: 6px;
+      background: #0a0a0a;
       color: #00ff99;
-      text-decoration: underline;
+      font-family: inherit;
+    }
+    .contact-form button {
+      background: #00ff99;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .contact-form button:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 8px #00ff99;
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .popup-content {
+      background: #111;
+      padding: 2rem;
+      border-radius: 10px;
+      border: 1px solid #00ff99;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .popup button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #00ff99;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
     /* Footer */
@@ -168,30 +220,47 @@
       <button class="close-btn" id="closeBtn">✖</button>
       <a href="home.html">Home</a>
       <a href="lessons.html">Lessons</a>
-      <a href="results.html">Results</a>
       <a href="contact.html">Contact Us</a>
       <button id="logoutBtn">Logout</button>
     </nav>
   </header>
 
-  <!-- Contact Content -->
+  <!-- Contact Section -->
   <main class="contact-container">
-    <h1>Contact Us</h1>
     <div class="contact-card">
-      <p>Email: <a href="#">garcia@gmail.com</a></p>
-      <p>Phone: <a href="#">09493661323</a></p>
-      <p>Facebook: <a href="https://www.facebook.com/joshua.m.garcia.977421" target="_blank">Joshua M Garcia</a></p>
+      <h2>Contact Us</h2>
+      <p>Have questions or feedback? Reach out to us!</p>
+
+      <p><strong>Email:</strong> <a href="mailto:garcia@gmail.com">garcia@gmail.com</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+639493661323">0949-366-1323</a></p>
+      <p><strong>Facebook:</strong> <a href="https://www.facebook.com/joshua.m.garcia.977421" target="_blank">Visit Profile</a></p>
+
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="4" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </div>
   </main>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <p id="popupMessage"></p>
+      <button onclick="document.getElementById('popup').style.display='none'">OK</button>
+    </div>
+  </div>
 
   <footer>
     © 2025 CyberShield | Research Project - Antipolo City Senior High School
   </footer>
 
-  <!-- Script -->
+  <!-- Firebase Logic -->
   <script type="module">
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDcy8AV_IMrphBOihSwT461C2_CmhHAZi4",
@@ -201,10 +270,48 @@
       messagingSenderId: "1055312271929",
       appId: "1:1055312271929:web:c3415a674782ade5550be8"
     };
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
+    const form = document.querySelector(".contact-form");
+
+    // Auth check
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const name = form.querySelector("input[placeholder='Your Name']").value.trim();
+          const email = form.querySelector("input[placeholder='Your Email']").value.trim();
+          const message = form.querySelector("textarea").value.trim();
+
+          try {
+            const ref = collection(db, "users", user.uid, "messages");
+            await addDoc(ref, {
+              name,
+              email,
+              message,
+              timestamp: serverTimestamp()
+            });
+
+            document.getElementById("popupMessage").textContent = "✅ Message sent successfully!";
+            document.getElementById("popup").style.display = "flex";
+            form.reset();
+          } catch (err) {
+            console.error(err);
+            document.getElementById("popupMessage").textContent = "⚠ Something went wrong. Try again.";
+            document.getElementById("popup").style.display = "flex";
+          }
+        });
+      }
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", async () => {
       await signOut(auth);
       localStorage.clear();
       window.location.href = "index.html";
@@ -215,12 +322,8 @@
     const navLinks = document.getElementById("navLinks");
     const closeBtn = document.getElementById("closeBtn");
 
-    menuToggle.addEventListener("click", () => {
-      navLinks.classList.add("active");
-    });
-    closeBtn.addEventListener("click", () => {
-      navLinks.classList.remove("active");
-    });
+    menuToggle.addEventListener("click", () => navLinks.classList.add("active"));
+    closeBtn.addEventListener("click", () => navLinks.classList.remove("active"));
   </script>
 </body>
 </html>
