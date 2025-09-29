@@ -278,7 +278,7 @@
         let finalScore = data.finalScore || 0;
         let passed = data.finalTest ? finalScore >= 20 : false;
 
-        document.getElementById("lessonOverview").textContent = `Completed ${lessonsDone}/6 lessons | ${xp} XP`;
+        document.getElementById("lessonOverview").textContent = `Completed ${lessonsDone}/6 lessons`;
         document.getElementById("homeResults").innerHTML = `
           XP: ${xp}/300 <br>
           Final Score: ${finalScore}/30 <br>
