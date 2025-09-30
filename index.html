@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="shortcut icon" type="x-icon" href="logo.jpg" />
   <title>CS | Login/Register</title>
   <style>
@@ -258,6 +259,31 @@
     }
     input::placeholder { color: #497a00aa; }
 
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-container input {
+      width: 100%;
+      padding-right: 2.5rem; /* space for eye icon */
+      box-sizing: border-box;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #00ff99;
+    }
+
+    .toggle-pass:hover {
+      color: #fff;
+    }
+
     .box button {
       width: 95%;
       padding: 12px;
@@ -443,8 +469,11 @@
       <!-- Login -->
       <div id="loginForm" class="form-container active">
         <h2>Login</h2>
-        <input type="email" id="loginEmail" placeholder="Enter your email" required />
-        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+        <input type="email" id="loginEmail" placeholder="Enter your email" required />        
+        <div class="password-container">
+          <input type="password" id="loginPassword" placeholder="Enter your password" required />
+          <i class="fa-solid fa-eye toggle-pass" data-target="loginPassword"></i>
+        </div>
         <button id="loginBtn">Login</button>
         <a onclick="showRegister()">Don't have an account? Signup</a>
       </div>
@@ -452,10 +481,15 @@
       <!-- Register -->
       <div id="registerForm" class="form-container">
         <h2>Signup</h2>
-        <input type="text" id="regName" placeholder="Enter your name (ex.JuanICT1202)" required />
-        <input type="email" id="regEmail" placeholder="Enter your email" required />
-        <input type="password" id="regPassword" placeholder="Create a password" required />
-        <input type="password" id="confirmPassword" placeholder="Confirm your password" required />
+        <input type="email" id="regEmail" placeholder="Enter your email" required />        
+        <div class="password-container">
+          <input type="password" id="regPassword" placeholder="Enter your password" required />
+          <i class="fa-solid fa-eye toggle-pass" data-target="regPassword"></i>          
+        </div>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" placeholder="Enter your password" required />
+          <i class="fa-solid fa-eye toggle-pass" data-target="confirmPassword"></i>
+        </div>   
         <button id="registerBtn">Signup</button>
         <a onclick="showLogin()">Already have an account? Login</a>
       </div>
@@ -546,43 +580,73 @@
 
     const messageBox = document.getElementById("message");
 
+    // Password strength validation
+    function isStrongPassword(password) {
+      const minLength = 8;
+      const hasUpper = /[A-Z]/.test(password);
+      const hasLower = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      
+      return password.length >= minLength && hasUpper && hasLower && hasNumber && hasSpecial;
+    }
+
+    // Toggle password visibility
+    document.querySelectorAll(".toggle-pass").forEach(icon => {
+      icon.addEventListener("click", () => {
+        const targetId = icon.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+        
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash"); // change to slashed eye
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye"); // back to normal eye
+        }
+      });
+    });
+
     // Register
     document.getElementById("registerBtn").addEventListener("click", async () => {
-      const name = document.getElementById("regName").value;
       const email = document.getElementById("regEmail").value;
       const password = document.getElementById("regPassword").value;
       const confirm = document.getElementById("confirmPassword").value;
-
-      // Check empty fields
-      if (!name || !email || !password || !confirm) {
+      
+      if (!email || !password || !confirm) {
         messageBox.innerText = "⚠ Please fill in all fields.";
         return;
       }
-
-      // Check if passwords match
+      
       if (password !== confirm) {
-        messageBox.innerText = "⚠ Passwords do not match!";
+        messageBox.innerText = "⚠ Passwords do not match.";
         return;
       }
-
+      
+      if (!isStrongPassword(password)) {
+        messageBox.innerText = 
+        "⚠ Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+        return;
+      }
+      
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
+        
         await setDoc(doc(db, "users", user.uid), {
           createdAt: serverTimestamp(),
-          email: user.email,
-          name: name
+          email: user.email
         });
-
+        
         localStorage.setItem("userUid", user.uid);
         localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userName", name);
-
-        messageBox.innerText = "Registered successfully! Redirecting...";
+        
+        messageBox.innerText = "✅ Registered successfully! Redirecting...";
         setTimeout(() => window.location.href = "home.html", 1500);
-      } catch (err) {
-        messageBox.innerText = err.message;
+      } catch (error) {
+        messageBox.innerText = "⚠ " + error.message;
       }
     });
 
