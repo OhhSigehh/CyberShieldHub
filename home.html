@@ -218,10 +218,10 @@
         <img src="learning.png" alt="Lessons Icon" class="card-icon">
         <h2>Lessons</h2>
         <p id="lessonOverview">Loading...</p>
-      </a>
+      </div>
 
       <!-- Results Card -->
-      <div class="card">
+      <div href="#" class="card">
         <img src="bar-chart.png" alt="Results Icon" class="card-icon">
         <h2>Results</h2>
         <div id="homeResults">Loading...</div>
@@ -281,7 +281,7 @@
         document.getElementById("lessonOverview").textContent = `Completed ${lessonsDone}/6 lessons`;
         document.getElementById("homeResults").innerHTML = `
           XP: ${xp}/300 <br>
-          Final Score: ${finalScore}/25 <br>
+          Final Score: ${finalScore}/30 <br>
           ${passed ? "Passed" : "Not Passed"}
         `;
       } else {
