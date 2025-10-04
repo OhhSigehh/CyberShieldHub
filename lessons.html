@@ -286,7 +286,7 @@
       padding: 1.5rem;
       border-radius: 10px;
       text-align: center;
-      max-width: 350px;
+      width: 70%; max-width: 350px;
       color: #00ff99;
       box-shadow: 0 0 15px #00ff99;
     }
@@ -336,7 +336,7 @@
   <main class="lessons-container">
     <h1>Cyber Lessons</h1>
     <div id="xp-bar"><div id="xp-fill"></div></div>
-    <p id="xp-text">XP: 0 / 250</p>
+    <p id="xp-text">XP: 0 / 300</p>
 
     <!-- Final Test button (hidden at first) -->
     <button id="finalTestBtn" class="finaltest">
@@ -406,6 +406,17 @@
     </div>
   </div>
 
+  <!-- Logout Confirmation Popup -->
+  <div id="logoutPopup" class="popup-modal">
+    <div class="popup-content">
+      <p id="logoutMessage">Are you sure you want to logout?</p>
+      <div style="margin-top:1rem; display:flex; justify-content:center; gap:1rem;">
+        <button id="logoutYes">Yes</button>
+        <button id="logoutNo" style="background:#ff3333;">No</button>
+      </div>
+    </div>
+  </div>
+  
   <!-- Popup Modal For Reset and Lesson Return -->
   <div id="popupModal" class="popup-modal">
     <div class="popup-content">
@@ -437,11 +448,24 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Logout Popup
     const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", async () => {
+    const logoutPopup = document.getElementById("logoutPopup");
+    const logoutYes = document.getElementById("logoutYes");
+    const logoutNo = document.getElementById("logoutNo");
+
+    logoutBtn.addEventListener("click", () => {
+      logoutPopup.style.display = "flex"; // show popup
+    });
+
+    logoutYes.addEventListener("click", async () => {
       await signOut(auth);
       localStorage.clear();
       window.location.href = "index.html";
+    });
+
+    logoutNo.addEventListener("click", () => {
+      logoutPopup.style.display = "none"; // close popup
     });
 
     // Load progress
