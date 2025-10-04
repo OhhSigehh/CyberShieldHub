@@ -16,6 +16,21 @@
       flex-direction: column;
     }
 
+    /* Mobile Menu */
+    .nav-links {
+      display: flex;
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #00ff99;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+  
     /* Navbar */
     .navbar {
       display: flex;
@@ -36,6 +51,7 @@
       text-shadow: 0 0 6px #00ff99;
     }
 
+    /* Hamburger menu button */
     .menu-toggle {
       font-size: 1.8rem;
       cursor: pointer;
@@ -85,7 +101,10 @@
     }
 
     /* Mobile Menu */
-    .nav-links { display: flex; }
+    .nav-links {
+      display: flex;
+    }
+
     .close-btn {
       display: none;
       background: none;
@@ -95,9 +114,12 @@
       cursor: pointer;
       align-self: flex-end;
     }
-
+  
     @media (max-width: 768px) {
-      .menu-toggle { display: block; }
+      .menu-toggle {
+        display: block;
+      }
+
       .nav-links {
         position: fixed;
         top: 0;
@@ -111,82 +133,156 @@
         border-left: 1px solid #00ff99;
         border-bottom: 1px solid #00ff99;
         width: 220px;
+        height: auto; /* Only take space of items */
         box-shadow: -2px 0 10px rgba(0,255,153,0.2);
       }
-      .nav-links.active { right: 0; }
-      .close-btn { display: block; margin-left: auto; margin-bottom: 0.5rem; }
-      .nav-links a, .nav-links button { width: 100%; text-align: left; }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .close-btn {
+        display: block;
+        margin-left: auto;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-links a, .nav-links button {
+        width: 100%;
+        text-align: left;
+      }
     }
 
     /* Main content */
-    .content {
-      flex: 1;
+    .content { 
+      flex: 1; 
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 2rem;
+      padding: 2rem; 
     }
-
-    .content h1 {
-      font-size: 2rem;
+    .content h1 { 
+      font-size: 2rem; 
       margin-bottom: 1rem;
-      text-shadow: 0 0 6px #00ff99;
+      text-shadow: 0 0 6px #00ff99; 
     }
-
-    .content p {
+    .content p { 
       font-size: 1.2rem;
       max-width: 700px;
-      margin-bottom: 2rem;
+      margin-bottom: 2rem; 
       line-height: 1.6;
     }
 
     /* Cards */
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
+    .card-container { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 1.5rem; 
+      justify-content: center; 
     }
-
-    .card {
-      background: #111;
+    .card { 
+      background: #111; 
       border: 1px solid #00ff99;
-      border-radius: 8px;
-      padding: 1.2rem;
-      font-size: 1rem;
+      border-radius: 8px; 
+      padding: 1.2rem; 
+      font-size: 1rem; 
       color: #00ff99;
-      text-decoration: none;
-      transition: 0.3s;
-      width: 260px;         
-      min-height: 180px;    
+      transition: 0.3s; 
+      width: 260px;
+      min-height: 180px; 
       display: flex; 
       flex-direction: column; 
       justify-content: center;
-      align-items: center;
-      text-align: center;
+      align-items: center; 
+      text-align: center; 
     }
-
-    .card:hover {
-      border: 1px solid #fff;
-      box-shadow: 0 0 12px #00ff99;
+    .card:hover { 
+      border: 1px solid #fff; 
+      box-shadow: 0 0 12px #00ff99; 
       transform: scale(1.05);
     }
-
-    .card h2 { margin-bottom: 0.8rem; }
-    .card p, .card div { margin: 0.5rem 0; }
-  
-    .card-icon {
+    .card h2 { 
+      margin-bottom: 0.8rem; 
+    }
+    .card p, .card div {
+      margin: 0.5rem 0; 
+    }
+    .card-icon { 
       max-width: 30%;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.5rem; 
     }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
+    footer { 
+      text-align: center; 
+      padding: 1rem; 
       border-top: 1px solid #00ff99;
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 0.9rem; 
+      opacity: 0.8; 
+    }
+
+    /* Confirmation popup buttons */
+    #confirmPopup .popup-content button {
+      padding: 0.5rem 1.2rem;
+      background: #00ff99;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #confirmPopup .popup-content button:hover {
+      background: #009966;
+      color: #fff;
+      box-shadow: 0 0 10px #00ff99;
+      border: 1px solid #fff
+    }
+    #confirmPopup #confirmNo {
+      background: #ff3333;
+    }
+    #confirmPopup #confirmNo:hover {
+      background: #cc0000;
+      box-shadow: 0 0 10px #ff3333;
+      border: 1px solid #fff
+    }
+
+    /* Popup Modal */
+    .popup-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+  
+    .popup-content {
+      background: #111;
+      border: 2px solid #00ff99;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      width: 70%; max-width: 350px;
+      color: #00ff99;
+      box-shadow: 0 0 15px #00ff99;
+    }
+  
+    .popup-content button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.2rem;
+      background: #00ff99;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .popup-content button:hover {
+      background: #009966;
+      color: #fff;
+      border: 1px solid #fff
+      box-shadow: 0 0 10px #00ff99;
     }
   </style>
 </head>
@@ -221,7 +317,7 @@
       </div>
 
       <!-- Results Card -->
-      <div href="#" class="card">
+      <div class="card">
         <img src="bar-chart.png" alt="Results Icon" class="card-icon">
         <h2>Results</h2>
         <div id="homeResults">Loading...</div>
@@ -232,6 +328,17 @@
   <footer>
     © 2025 CyberShield | Research Project - Antipolo City Senior High School
   </footer>
+
+  <!-- Logout Confirmation Popup -->
+  <div id="logoutPopup" class="popup-modal">
+    <div class="popup-content">
+      <p id="logoutMessage">Are you sure you want to logout?</p>
+      <div style="margin-top:1rem; display:flex; justify-content:center; gap:1rem;">
+        <button id="logoutYes">Yes</button>
+        <button id="logoutNo" style="background:#ff3333;">No</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script type="module">
@@ -252,11 +359,24 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Logout
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
+    // Logout Popup
+    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutPopup = document.getElementById("logoutPopup");
+    const logoutYes = document.getElementById("logoutYes");
+    const logoutNo = document.getElementById("logoutNo");
+
+    logoutBtn.addEventListener("click", () => {
+      logoutPopup.style.display = "flex"; // show popup
+    });
+
+    logoutYes.addEventListener("click", async () => {
       await signOut(auth);
       localStorage.clear();
       window.location.href = "index.html";
+    });
+
+    logoutNo.addEventListener("click", () => {
+      logoutPopup.style.display = "none"; // close popup
     });
 
     // Hamburger toggle
